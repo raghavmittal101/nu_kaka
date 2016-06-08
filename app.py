@@ -1,9 +1,13 @@
+# create virtualenv before using this program
+
+import getpass
 # program to login and apply for local gatepass on moodle
 global username
 global password
 
-username = ""  ## enter moodle username here
-password = ""  ## enter moodle password here
+
+username = raw_input("usrename:")  ## enter moodle username
+password = getpass.getpass("password:")  ## enter moodle password
 
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
