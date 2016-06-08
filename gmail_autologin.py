@@ -2,8 +2,10 @@
 global password
 global username
 
-password = " " #put password
-username = " " #insert username
+import getpass
+
+username = raw_input('email:') #insert username
+password = getpass.getpass('password:') #put password
 
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
