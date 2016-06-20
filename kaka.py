@@ -1,27 +1,24 @@
-# create virtualenv before using this program
-
-import getpass
-# program to login and apply for local gatepass on moodle
-global username
-global password
-
-
-username = raw_input("usrename:")  ## enter moodle username
-password = getpass.getpass("password:")  ## enter moodle password
-
+from Tkinter import *
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
+import conf
 
-import unittest
+# class for login using selenium webdrivers
+class Login:
 
-class LoginTest(unittest.TestCase):
+    def __init__(self):
+        """
+        #location of chromedriver needed for running selenium on chrome browser. SPECIFY IT IN CONF FILE
+        driver = webdriver.Chrome(conf.CHROME_DRIVER_PATH) #FOR CHROME
 
-    def setUp(self):
-        # open URL in firefox
-        self.driver = webdriver.Firefox()
+        driver = webdriver.Firefox() #FOR FIREFOX
+        """
+        driver = webdriver.Firefox() #working with firefox. see above comment and edit it to change the browser
+
         self.driver.get("https://moodle.niituniversity.in")
+        self.tLogin()
 
-    def test_Login(self):
+    def tLogin(self):
         driver = self.driver
 
         loginButtonXpath = "/html/body/div[2]/div[1]/div/div[2]/div/div/div[1]/div[1]/div/a"
@@ -41,7 +38,6 @@ class LoginTest(unittest.TestCase):
         passwordBoxElement.send_keys(password)
         SignInButtonElement.click()
 
-        gatePassButtonID = "yui_3_13_0_2_1465199879029_67"
         gatePassButtonXpath = "/html/body/div[2]/div[1]/div/div[2]/div/div/div[3]/div/div/div[1]/div/div/div/form/div/table/tbody/tr/td[1]/label[1]/input"
         gatePassButtonElement = WebDriverWait(driver, 30).until(lambda driver: driver.find_element_by_xpath(gatePassButtonXpath))
         gatePassButtonElement.click()
@@ -58,5 +54,53 @@ class LoginTest(unittest.TestCase):
         applyForPassButtonElement = WebDriverWait(driver, 30).until(lambda driver: driver.find_element_by_xpath(applyForPassButtonXpath))
         applyForPassButtonElement.click()
 
-if __name__ == "__main__":
-    unittest.main()
+class gui:
+    def fetch(self):
+        global username
+        global password
+        username =  str(self.usernameIn.get())
+        password =  str(self.passwordIn.get())
+        if len(username) & len(password):
+                root.quit()
+                l = Login()
+        else:
+            print 'both fields required'
+
+    def __init__(self, master):
+        frame1 = Frame(master)
+        frame1.grid(row=1)
+
+        frame2 = Frame(master)
+        frame2.grid(row=2)
+
+        frame1_1 = Frame(master)
+        frame1_1.grid(row=1, column=1)
+
+        frame1_2 = Frame(master)
+        frame1_2.grid(row=1, column=2)
+
+        frame2_1 = Frame(master)
+        frame2_1.grid(row=2, column=1)
+
+        frame2_2 = Frame(master)
+        frame2_2.grid(row=2, column=2)
+
+        frame3 = Frame(master)
+        frame3.grid(row=3)
+
+        self.usernameL = Label(frame1_1, text="Username")
+        self.passwordL = Label(frame2_1, text="Password")
+        self.usernameIn = Entry(frame1_2)
+        self.passwordIn = Entry(frame2_2, show='*')
+
+        self.loginbutton = Button(frame3, text="apply", command=self.fetch)
+        self.usernameL.pack()
+        self.passwordL.pack()
+        self.usernameIn.pack()
+        self.passwordIn.pack()
+        self.loginbutton.pack(side=RIGHT)
+
+root = Tk()
+obj = gui(root)
+root.mainloop()
+
