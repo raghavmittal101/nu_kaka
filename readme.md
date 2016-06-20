@@ -16,7 +16,7 @@ run `setup.sh`
 
 To run kaka.py type  `python kaka.py`
 
-*CHANGE sample_conf.py to conf.py*
-*Add location to chromedriver*
+##### CHANGE `sample_conf.py` to `conf.py`
+##### Add location to chromedriver
 
 
